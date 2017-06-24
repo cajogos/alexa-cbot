@@ -1,0 +1,18 @@
+{
+	"name": "cbot",
+	"version": "0.0.1",
+	"description": "Official repository for cbot.",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"keywords": [
+		"alexa", "skill", "cbot", "bitcoin"
+	],
+	"author": "Carlos Ferreira",
+	"license": "MIT",
+	"dependencies": {
+		"alexa-sdk": "^1.0.6",
+		"https": "1.0.0"
+	}
+}
