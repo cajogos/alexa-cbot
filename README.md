@@ -8,10 +8,12 @@ Another aim is for anyone looking to make their own Alexa skill to be able to ha
 
 ### 1. Bitcoin Value
 
-cBot can tell you the current bitcoin value, try saying:
+cBot can tell you the current bitcoin value in dollars, pounds and euros. Default will always be dollars, try saying:
 
-`Alexa ask cbot for current bitcoin value`
+`bitcoin value in pounds`
 
-**TODO:** Be able to give bitcoin value in euros and sterling, currently only dollars is given.
+You may also invoke the request by simply saying:
+
+`Alexa ask cbot about bitcoin value in pounds`
 
 ### More skills coming soon...

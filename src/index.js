@@ -23,13 +23,36 @@ var handlers = {
 	},
 	'StartIntent': function()
 	{
-		var speechOutput = 'Hello there, I am ' + CBOT_SAY + ' how may I help?';
-		var reprompt = 'Do not fear ' + CBOT_SAY + ' is here!';
+		var speechOutput = 'Hey you! I am ' + CBOT_SAY + '! How may I help?';
+		var reprompt = 'Do not fear! ' + CBOT_SAY + ' is here!';
 		this.emit(':ask', speechOutput, reprompt);
 	},
 	'GetBitcoinValueIntent': function()
 	{
-		// var currency = this.event.request.intent.slots.currency;
+		var currencySlot = this.event.request.intent.slots.currency;
+
+		var currency = 'USD';
+
+		var currencyValue;
+		if (currencySlot && currencySlot.value)
+		{
+			currencyValue = currencySlot.value.toLowerCase();
+			switch (currencyValue)
+			{
+				case 'euros':
+				case 'eur':
+				case 'euro':
+					currency = 'EUR';
+					break;
+				case 'sterling':
+				case 'pounds':
+				case 'pound':
+				case 'gbp':
+					currency = 'GBP';
+					break;
+			}
+		}
+
 		var req = https.request({
 			host: 'carlos.fyi',
 			port: 443,
@@ -45,9 +68,21 @@ var handlers = {
 			});
 
 			res.on('end', () => {
-				var bitcoinValue = JSON.parse(returnData).values.USD;
-				var speechOutput = 'A bitcoin is worth ' + bitcoinValue + ' dollars';
-				var cardTitle = SKILL_NAME + ' Bitcoin Value';
+				var parsedValues = JSON.parse(returnData).values;
+				var bitcoinValue = parseFloat(parsedValues.USD);
+				var speechOutput = 'A bitcoin is worth ' + bitcoinValue + ' dollars!';
+				if (currency === 'EUR')
+				{
+					bitcoinValue = parseFloat(parsedValues.EUR);
+					speechOutput = 'A bitcoin is worth ' + bitcoinValue + ' euros!';
+				}
+				else if (currency === 'GBP')
+				{
+					bitcoinValue = parseFloat(parsedValues.GBP);
+					speechOutput = 'A bitcoin is worth ' + bitcoinValue + ' pounds!';
+				}
+				
+				var cardTitle = SKILL_NAME + ' Bitcoin Value (' + currency + ')';
 				this.emit(':tellWithCard', speechOutput, cardTitle, speechOutput);
 			});
 		});
